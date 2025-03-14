@@ -1,13 +1,13 @@
-package com.gidcode.destineyshop;
+package com.gidcode.destinyshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class DestineyshopApplication {
+public class DestinyshopApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DestineyshopApplication.class, args);
+		SpringApplication.run(DestinyshopApplication.class, args);
 	}
 
 }
