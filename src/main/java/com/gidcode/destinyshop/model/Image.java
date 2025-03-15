@@ -14,7 +14,7 @@ import jakarta.persistence.ManyToOne;
 public record Image(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id,
+    Long id,
     String fileName,
     String fileType,
     @Lob

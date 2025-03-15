@@ -16,7 +16,7 @@ import jakarta.persistence.OneToMany;
 public record Product(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id,
+    Long id,
     String name,
     String brand,
     BigDecimal price,
@@ -30,6 +30,6 @@ public record Product(
 ) {
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
-        this(0, name, brand, price, inventory, description, category, List.of());
+        this(null,name, brand, price, inventory, description, category, List.of());
     }
 }

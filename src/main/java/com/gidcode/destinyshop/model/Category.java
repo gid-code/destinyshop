@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 public record Category(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id,
+    Long id,
     String name,
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Product> products
