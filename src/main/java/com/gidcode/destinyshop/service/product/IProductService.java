@@ -2,6 +2,7 @@ package com.gidcode.destinyshop.service.product;
 
 import java.util.List;
 
+import com.gidcode.destinyshop.dto.ProductDto;
 import com.gidcode.destinyshop.model.Product;
 import com.gidcode.destinyshop.request.AddProductRequest;
 import com.gidcode.destinyshop.request.UpdateProductRequest;
@@ -18,4 +19,6 @@ public interface IProductService {
     List<Product> getProductsByName(String product);
     List<Product> getProductsByBrandAndName(String brand, String product);
     long countProductsByBandAndName(String brand, String product);
+    ProductDto convertToDto(Product product);
+    List<ProductDto> getConvertedProducts(List<Product> products);
 }
