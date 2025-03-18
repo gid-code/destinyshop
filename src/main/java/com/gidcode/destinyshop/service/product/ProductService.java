@@ -24,8 +24,11 @@ public class ProductService implements IProductService{
     @Override
     public Product addProduct(AddProductRequest addProductRequest) {
         Category category = Optional.ofNullable(
-                categoryRepository.findByName(addProductRequest.category().name())
-        ).orElseGet( () -> categoryRepository.save(addProductRequest.category()));
+                categoryRepository.findByName(addProductRequest.category().getName())
+        ).orElseGet( () -> {
+            Category newCategory = new Category(addProductRequest.category().getName());
+            return categoryRepository.save(newCategory);
+        });
 
         return productRepository.save(createProduct(addProductRequest,category));
     }
@@ -63,16 +66,24 @@ public class ProductService implements IProductService{
     }
 
     private Product updateExistingProduct(Product existingProduct, UpdateProductRequest updateProductRequest) {
-        return new Product(
-                existingProduct.id(),
-                updateProductRequest.name(),
-                updateProductRequest.brand(),
-                updateProductRequest.price(),
-                updateProductRequest.inventory(),
-                updateProductRequest.description(),
-                categoryRepository.findByName(updateProductRequest.category().name()),
-                existingProduct.images()
-        );
+        existingProduct.setName(updateProductRequest.name());
+        existingProduct.setInventory(updateProductRequest.inventory());
+        existingProduct.setBrand(updateProductRequest.brand());
+        existingProduct.setPrice(updateProductRequest.price());
+        existingProduct.setDescription(updateProductRequest.description());
+        existingProduct.setCategory(categoryRepository.findByName(updateProductRequest.category().getName()));
+
+        return existingProduct;
+//        return new Product(
+//                existingProduct.getId(),
+//                updateProductRequest.name(),
+//                updateProductRequest.brand(),
+//                updateProductRequest.price(),
+//                updateProductRequest.inventory(),
+//                updateProductRequest.description(),
+//                categoryRepository.findByName(updateProductRequest.category().getName()),
+//                existingProduct.getImages()
+//        );
     }
 
     @Override

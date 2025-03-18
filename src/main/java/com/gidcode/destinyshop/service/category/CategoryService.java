@@ -38,21 +38,23 @@ public class CategoryService implements ICategoryService{
 
     @Override
     public Category addCategory(Category category) {
+
         return Optional.of(category)
-                .filter(newCategory-> !categoryRepository.existsByName(newCategory.name()))
+                .filter(newCategory-> !categoryRepository.existsByName(newCategory.getName()))
                 .map(categoryRepository::save)
-                .orElseThrow(() -> new AlreadyExistException(category.name()+ "already exist!"));
+                .orElseThrow(() -> new AlreadyExistException(category.getName()+ "already exist!"));
     }
 
     @Override
     public Category updateCategory(Category category, long id) {
         Category existingCategory = getCategoryById(id);
-        Category newRecord = new Category(
-                existingCategory.id(),
-                category.name(),
-                existingCategory.products()
-        );
-        return categoryRepository.save(newRecord);
+        existingCategory.setName(category.getName());
+//        Category newRecord = new Category(
+//                existingCategory.id(),
+//                category.name(),
+//                existingCategory.products()
+//        );
+        return categoryRepository.save(existingCategory);
     }
 
     @Override

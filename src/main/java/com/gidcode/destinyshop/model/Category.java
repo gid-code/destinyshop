@@ -2,16 +2,28 @@ package com.gidcode.destinyshop.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public record Category(
+public class Category{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id,
-    String name,
-    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Product> products
-) {
-    
+    private Long id;
+    private String name;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
+
+    public Category(String name) {
+        this.name = name;
+    }
 }

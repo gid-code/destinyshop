@@ -11,25 +11,38 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
-public record Product(
+public class Product{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id,
-    String name,
-    String brand,
-    BigDecimal price,
-    int inventory,
-    String description,
+    private Long id;
+    private String name;
+    private String brand;
+    private BigDecimal price;
+    private int inventory;
+    private String description;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
-    Category category,
+    private Category category;
+
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Image> images
-) {
+    private List<Image> images;
 
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
-        this(null,name, brand, price, inventory, description, category, List.of());
+        this.name = name;
+        this.brand = brand;
+        this.price = price;
+        this.inventory = inventory;
+        this.description = description;
+        this.category = category;
     }
 }

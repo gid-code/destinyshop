@@ -35,7 +35,7 @@ public class ProductController {
         }
     }
 
-    @GetMapping("/{productName}")
+    @GetMapping("/search={productName}")
     public ResponseEntity<ApiResponse> getProductsByName(@PathVariable String productName) {
         try {
             List<Product> products = productService.getProductsByName(productName);

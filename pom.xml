@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gidcode</groupId>
-	<artifactId>destineyshop</artifactId>
+	<artifactId>destinyshop</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>destineyshop</name>
+	<name>destinyshop</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

@@ -9,19 +9,26 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
-public record Image(
+public class Image{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id,
-    String fileName,
-    String fileType,
+    private Long id;
+    private String fileName;
+    private String fileType;
     @Lob
-    Blob image,
-    String downloadUrl,
+    private Blob image;
+    private String downloadUrl;
     @ManyToOne
     @JoinColumn(name = "product_id")
-    Product product
-) {
+    private Product product;
 }

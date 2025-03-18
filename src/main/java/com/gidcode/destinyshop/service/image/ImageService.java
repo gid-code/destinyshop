@@ -46,31 +46,39 @@ public class ImageService implements IImageService{
 
         for (MultipartFile file : files){
             try {
-                Image image = new Image(
-                        null,
-                        file.getOriginalFilename(),
-                        file.getContentType(),
-                        new SerialBlob(file.getBytes()),
-                        downloadUrlPath,
-                        product
-                );
+                Image image = new Image();
+                image.setFileName(file.getOriginalFilename());
+                image.setFileType(file.getContentType());
+                image.setImage(new SerialBlob(file.getBytes()));
+                image.setDownloadUrl(downloadUrlPath);
+                image.setProduct(product);
+//                Image image = new Image(
+//                        null,
+//                        file.getOriginalFilename(),
+//                        file.getContentType(),
+//                        new SerialBlob(file.getBytes()),
+//                        downloadUrlPath,
+//                        product
+//                );
                 Image savedImage = imageRepository.save(image);
+                savedImage.setDownloadUrl(downloadUrlPath+savedImage.getId());
                 imageRepository.save(
-                        new Image(
-                                savedImage.id(),
-                                savedImage.fileName(),
-                                savedImage.fileType(),
-                                savedImage.image(),
-                                downloadUrlPath+savedImage.id(),
-                                savedImage.product()
-                        )
+                        savedImage
+//                        new Image(
+//                                savedImage.id(),
+//                                savedImage.fileName(),
+//                                savedImage.fileType(),
+//                                savedImage.image(),
+//                                downloadUrlPath+savedImage.id(),
+//                                savedImage.product()
+//                        )
                 );
 
                 savedImageDtos.add(
                         new ImageDto(
-                                savedImage.id(),
-                                savedImage.fileName(),
-                                savedImage.downloadUrl()
+                                savedImage.getId(),
+                                savedImage.getFileName(),
+                                savedImage.getDownloadUrl()
                         )
                 );
             }catch (IOException | SQLException e){
@@ -86,15 +94,18 @@ public class ImageService implements IImageService{
     public void updateImage(MultipartFile file, long imageId) {
         Image existingImage = getImageById(imageId);
         try {
-            Image newImage = new Image(
-                    existingImage.id(),
-                    file.getOriginalFilename(),
-                    file.getContentType(),
-                    new SerialBlob(file.getBytes()),
-                    existingImage.downloadUrl(),
-                    existingImage.product()
-            );
-            imageRepository.save(newImage);
+            existingImage.setFileName(file.getOriginalFilename());
+            existingImage.setFileType(file.getContentType());
+            existingImage.setImage(new SerialBlob(file.getBytes()));
+//            Image newImage = new Image(
+//                    existingImage.id(),
+//                    file.getOriginalFilename(),
+//                    file.getContentType(),
+//                    new SerialBlob(file.getBytes()),
+//                    existingImage.downloadUrl(),
+//                    existingImage.product()
+//            );
+            imageRepository.save(existingImage);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
