@@ -52,26 +52,11 @@ public class ImageService implements IImageService{
                 image.setImage(new SerialBlob(file.getBytes()));
                 image.setDownloadUrl(downloadUrlPath);
                 image.setProduct(product);
-//                Image image = new Image(
-//                        null,
-//                        file.getOriginalFilename(),
-//                        file.getContentType(),
-//                        new SerialBlob(file.getBytes()),
-//                        downloadUrlPath,
-//                        product
-//                );
+
                 Image savedImage = imageRepository.save(image);
                 savedImage.setDownloadUrl(downloadUrlPath+savedImage.getId());
                 imageRepository.save(
                         savedImage
-//                        new Image(
-//                                savedImage.id(),
-//                                savedImage.fileName(),
-//                                savedImage.fileType(),
-//                                savedImage.image(),
-//                                downloadUrlPath+savedImage.id(),
-//                                savedImage.product()
-//                        )
                 );
 
                 savedImageDtos.add(
@@ -97,14 +82,6 @@ public class ImageService implements IImageService{
             existingImage.setFileName(file.getOriginalFilename());
             existingImage.setFileType(file.getContentType());
             existingImage.setImage(new SerialBlob(file.getBytes()));
-//            Image newImage = new Image(
-//                    existingImage.id(),
-//                    file.getOriginalFilename(),
-//                    file.getContentType(),
-//                    new SerialBlob(file.getBytes()),
-//                    existingImage.downloadUrl(),
-//                    existingImage.product()
-//            );
             imageRepository.save(existingImage);
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e.getMessage());

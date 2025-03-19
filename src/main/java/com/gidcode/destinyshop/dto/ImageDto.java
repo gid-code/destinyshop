@@ -6,4 +6,7 @@ public record ImageDto (
     String downloadUrl
 ){
 
+//    public ImageDto(long id, String fileName) {
+//        this(id, fileName, null);
+//    }
 }

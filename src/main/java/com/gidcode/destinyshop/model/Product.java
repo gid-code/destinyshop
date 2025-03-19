@@ -3,6 +3,7 @@ package com.gidcode.destinyshop.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.gidcode.destinyshop.dto.ProductDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,5 +45,9 @@ public class Product{
         this.inventory = inventory;
         this.description = description;
         this.category = category;
+    }
+
+    public ProductDto toProductDto(){
+        return new ProductDto(this.name, this.brand, this.price, this.inventory, this.description, this.category, null);
     }
 }

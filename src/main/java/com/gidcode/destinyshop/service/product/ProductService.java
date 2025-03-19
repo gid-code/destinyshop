@@ -13,6 +13,7 @@ import com.gidcode.destinyshop.repository.CategoryRepository;
 import com.gidcode.destinyshop.repository.ImageRepository;
 import com.gidcode.destinyshop.request.AddProductRequest;
 import com.gidcode.destinyshop.request.UpdateProductRequest;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.gidcode.destinyshop.model.Product;
@@ -23,16 +24,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService implements IProductService{
-
-    private final CategoryController categoryController;
+    
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final ImageRepository imageRepository;
     private final ModelMapper modelMapper;
-
-    ProductService(CategoryController categoryController) {
-        this.categoryController = categoryController;
-    }
 
     @Override
     public Product addProduct(AddProductRequest addProductRequest) {
@@ -87,16 +83,6 @@ public class ProductService implements IProductService{
         existingProduct.setCategory(categoryRepository.findByName(updateProductRequest.category().getName()));
 
         return existingProduct;
-//        return new Product(
-//                existingProduct.getId(),
-//                updateProductRequest.name(),
-//                updateProductRequest.brand(),
-//                updateProductRequest.price(),
-//                updateProductRequest.inventory(),
-//                updateProductRequest.description(),
-//                categoryRepository.findByName(updateProductRequest.category().getName()),
-//                existingProduct.getImages()
-//        );
     }
 
     @Override
@@ -136,14 +122,24 @@ public class ProductService implements IProductService{
     
     @Override
     public ProductDto convertToDto(Product product){
-        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        ProductDto productDto = product.toProductDto();
         List<Image> images = imageRepository.findProductById(product.getId());
-        List<ImageDto> imageDtos = images.stream().map(image -> modelMapper.map(image, ImageDto.class)).toList();
+        List<ImageDto> imageDtos = images.stream().map(Image::toImageDto).toList();
         return new ProductDto(productDto.name(), productDto.brand(), productDto.price(), productDto.inventory(), productDto.description(), productDto.category(), imageDtos);
     }
 
     @Override
     public List<ProductDto> getConvertedProducts(List<Product> products) {
         return products.stream().map(this::convertToDto).toList();
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryNameAndName(String category, String name) {
+        return productRepository.findByCategoryNameAndName(category, name);
+    }
+
+    @Override
+    public List<Product> getProductsByCategoryNameAndBrandAndName(String categoryName, String brand, String name) {
+        return productRepository.findByCategoryNameAndBrandAndName(categoryName, brand, name);
     }
 }

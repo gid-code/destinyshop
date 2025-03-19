@@ -1,8 +1,9 @@
 package com.gidcode.destinyshop.dto;
 
+import com.gidcode.destinyshop.model.Category;
+
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Locale.Category;
 
 public record ProductDto(
     String name,
@@ -13,5 +14,7 @@ public record ProductDto(
     Category category,
     List<ImageDto> images
 ) {
-    
+//    public ProductDto(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+//        this(name, brand, price, inventory, description, category, null);
+//    }
 }

@@ -2,6 +2,7 @@ package com.gidcode.destinyshop.model;
 
 import java.sql.Blob;
 
+import com.gidcode.destinyshop.dto.ImageDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,4 +32,8 @@ public class Image{
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    public ImageDto toImageDto(){
+        return new ImageDto(this.id, this.fileName, this.downloadUrl);
+    }
 }
