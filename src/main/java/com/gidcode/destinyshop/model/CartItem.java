@@ -29,8 +29,6 @@ public class CartItem {
     @JoinColumn(name = "product_id")
     private Product product;
     private int quantity;
-//    private BigDecimal unitPrice;
-//    private BigDecimal totalPrice;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "cart_id")
@@ -40,5 +38,9 @@ public class CartItem {
 
     public BigDecimal getTotalPrice() {
         return this.getProduct().getPrice().multiply(new BigDecimal(quantity));
+    }
+
+    public BigDecimal getUnitPrice() {
+        return this.getProduct().getPrice();
     }
 }

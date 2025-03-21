@@ -17,12 +17,16 @@ import lombok.Setter;
 @Entity
 public class Cart {
     @Id
-//    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 //    private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CartItem> cartItems = new HashSet<>();
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public void addItem(CartItem item) {
         this.cartItems.add(item);
@@ -33,18 +37,16 @@ public class Cart {
     public void removeItem(CartItem item) {
         this.cartItems.remove(item);
         item.setCart(null);
-//        updateTotalAmount();
     }
         
-    public BigDecimal totalAmount() {
-        return cartItems.stream().map(item -> {
-            BigDecimal unitPrice = item.getProduct().getPrice();
-            if (unitPrice == null) {
-                return BigDecimal.ZERO;
-            }
-
-            return unitPrice.multiply(BigDecimal.valueOf(item.getQuantity()));
-        }).reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getTotalAmount() {
+        //            BigDecimal unitPrice = item.getProduct().getPrice();
+        //            if (unitPrice == null) {
+        //                return BigDecimal.ZERO;
+        //            }
+        //
+        //            return unitPrice.multiply(BigDecimal.valueOf(item.getQuantity()));
+        return cartItems.stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
 }

@@ -31,12 +31,12 @@ public class CartItemService implements ICartItemService{
             cartItem.setCart(cart);
             cartItem.setQuantity(quantity);
             cartItem.setProduct(product);
-            cartItem.setUnitPrice(product.getPrice());
+//            cartItem.setUnitPrice(product.getPrice());
         } else {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
 
-        cartItem.setTotalPrice();
+//        cartItem.setTotalPrice();
         cart.addItem(cartItem);
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
@@ -59,11 +59,11 @@ public class CartItemService implements ICartItemService{
         getCartItem(productId, cart)
                 .ifPresent(item -> {
                     item.setQuantity(quantity);
-                    item.setTotalPrice();
+//                    item.setTotalPrice();
                     cartItemRepository.save(item);
                 });
 
-        cart.updateTotalAmount();
+//        cart.updateTotalAmount();
         cartRepository.save(cart);
     }
 

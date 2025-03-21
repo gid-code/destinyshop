@@ -17,14 +17,12 @@ import lombok.RequiredArgsConstructor;
 public class CartService implements ICartService{
     private final CartRepository cartRepository;
     private final CartItemRepository cartItemRepository;
-    private final AtomicLong cartIdGenerator = new AtomicLong(0);
 
     @Override
     public Cart getCart(Long id) {
         Cart cart = cartRepository.findById(id)
         .orElseThrow(()-> new CartNotFoundException("Cart with id "+id+" not found"));
 
-        cart.setTotalAmount(cart.getTotalAmount());
         return cartRepository.save(cart);
     }
 
@@ -44,8 +42,12 @@ public class CartService implements ICartService{
     @Override
     public Long initializeCart(){
         Cart cart = new Cart();
-        cart.setId(cartIdGenerator.incrementAndGet());
         return cartRepository.save(cart).getId();
     }
-    
+
+    @Override
+    public Cart getCartByUserId(Long userId) {
+        return cartRepository.findByUserId(userId);
+    }
+
 }
