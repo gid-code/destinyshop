@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("${api.prefix}/images")
+@RequestMapping("${api.prefix}/image")
 public class ImageController {
     private final IImageService imageService;
 

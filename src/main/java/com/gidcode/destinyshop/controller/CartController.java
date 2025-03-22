@@ -1,5 +1,6 @@
 package com.gidcode.destinyshop.controller;
 
+import com.gidcode.destinyshop.dto.CartDto;
 import com.gidcode.destinyshop.exception.CartNotFoundException;
 import com.gidcode.destinyshop.model.Cart;
 import com.gidcode.destinyshop.response.ApiResponse;
@@ -13,14 +14,14 @@ import java.math.BigDecimal;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/carts")
-public class CartController {
+@RequestMapping("${api.prefix}/cart")
+public class CartController extends BaseController{
     private final ICartService cartService;
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getCart(@PathVariable Long id) {
         try {
-            Cart cart = cartService.getCart(id);
+            CartDto cart = cartService.getCart(id).toDto();
             return ResponseEntity.ok(new ApiResponse("Success",cart));
         } catch (CartNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(),null));

@@ -3,7 +3,9 @@ package com.gidcode.destinyshop.model;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
+import com.gidcode.destinyshop.dto.CartDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -47,6 +49,14 @@ public class Cart {
         //
         //            return unitPrice.multiply(BigDecimal.valueOf(item.getQuantity()));
         return cartItems.stream().map(CartItem::getTotalPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public CartDto toDto(){
+        return new CartDto(
+                id,
+                cartItems.stream().map(CartItem::toDto).collect(Collectors.toSet()),
+                getTotalAmount()
+        );
     }
 
 }

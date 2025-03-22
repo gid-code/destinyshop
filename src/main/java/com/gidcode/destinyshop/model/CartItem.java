@@ -3,6 +3,7 @@ package com.gidcode.destinyshop.model;
 import java.math.BigDecimal;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.gidcode.destinyshop.dto.CartItemDto;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -42,5 +43,14 @@ public class CartItem {
 
     public BigDecimal getUnitPrice() {
         return this.getProduct().getPrice();
+    }
+
+    public CartItemDto toDto(){
+        return new CartItemDto(
+                id,
+                product.toProductDto(),
+                quantity,
+                getTotalPrice()
+        );
     }
 }

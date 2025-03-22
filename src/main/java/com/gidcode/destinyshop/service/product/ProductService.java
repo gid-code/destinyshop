@@ -122,10 +122,10 @@ public class ProductService implements IProductService{
     
     @Override
     public ProductDto convertToDto(Product product){
-        ProductDto productDto = product.toProductDto();
-        List<Image> images = imageRepository.findProductById(product.getId());
-        List<ImageDto> imageDtos = images.stream().map(Image::toImageDto).toList();
-        return new ProductDto(productDto.name(), productDto.brand(), productDto.price(), productDto.inventory(), productDto.description(), productDto.category(), imageDtos);
+        return product.toProductDto();
+//        List<Image> images = imageRepository.findProductById(product.getId());
+//        List<ImageDto> imageDtos = images.stream().map(Image::toImageDto).toList();
+//        return new ProductDto(productDto.name(), productDto.brand(), productDto.price(), productDto.inventory(), productDto.description(), productDto.category(), imageDtos);
     }
 
     @Override

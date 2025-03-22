@@ -1,8 +1,10 @@
 package com.gidcode.destinyshop.service.cart;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import com.gidcode.destinyshop.model.User;
 import com.gidcode.destinyshop.repository.CartItemRepository;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +42,13 @@ public class CartService implements ICartService{
     }
 
     @Override
-    public Long initializeCart(){
-        Cart cart = new Cart();
-        return cartRepository.save(cart).getId();
+    public Cart initializeCart(User user){
+        return Optional.ofNullable(getCartByUserId(user.getId()))
+                .orElseGet(() -> {
+                    Cart cart = new Cart();
+                    cart.setUser(user);
+                    return cartRepository.save(cart);
+                });
     }
 
     @Override

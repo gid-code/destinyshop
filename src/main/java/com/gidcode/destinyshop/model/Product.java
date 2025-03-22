@@ -48,6 +48,14 @@ public class Product{
     }
 
     public ProductDto toProductDto(){
-        return new ProductDto(this.name, this.brand, this.price, this.inventory, this.description, this.category, null);
+        return new ProductDto(
+                this.name,
+                this.brand,
+                this.price,
+                this.inventory,
+                this.description,
+                this.category,
+                images.stream().map(Image::toImageDto).toList()
+        );
     }
 }
