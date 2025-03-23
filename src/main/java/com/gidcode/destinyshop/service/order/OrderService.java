@@ -1,5 +1,6 @@
 package com.gidcode.destinyshop.service.order;
 
+import com.gidcode.destinyshop.dto.OrderDto;
 import com.gidcode.destinyshop.enums.OrderStatus;
 import com.gidcode.destinyshop.exception.OrderNotFoundException;
 import com.gidcode.destinyshop.model.Cart;
@@ -40,8 +41,8 @@ public class OrderService implements IOrderService {
 
     private Order createOrder(Cart cart){
         Order order = new Order();
-        order.setOrderStatus(OrderStatus.PENDING);
-        order.setOrderDate(LocalDate.now());
+        order.setStatus(OrderStatus.PENDING);
+        order.setDate(LocalDate.now());
         order.setUser(cart.getUser());
         return order;
     }
@@ -62,13 +63,19 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Order getOrder(Long orderId) {
+    public OrderDto getOrder(Long orderId) {
         return orderRepository.findById(orderId)
+                .map(this::convertToDto)
                 .orElseThrow(()-> new OrderNotFoundException("Order of id "+orderId+" not found"));
     }
 
     @Override
-    public List<Order> getUserOrders(Long userId) {
-        return orderRepository.findByUserId(userId);
+    public List<OrderDto> getUserOrders(Long userId) {
+        return orderRepository.findByUserId(userId)
+                .stream().map(this::convertToDto).toList();
+    }
+
+    private OrderDto convertToDto(Order order){
+        return order.toDto();
     }
 }

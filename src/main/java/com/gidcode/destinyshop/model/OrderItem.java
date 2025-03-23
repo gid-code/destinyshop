@@ -1,5 +1,6 @@
 package com.gidcode.destinyshop.model;
 
+import com.gidcode.destinyshop.dto.OrderItemDto;
 import com.gidcode.destinyshop.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -34,5 +35,15 @@ public class OrderItem {
         this.quantity = quantity;
         this.unitPrice = unitPrice;
         this.product = product;
+    }
+
+    public OrderItemDto toDto(){
+        return new OrderItemDto(
+                this.product.getId(),
+                this.product.getName(),
+                this.quantity,
+                this.unitPrice,
+                product.getImages().stream().map(Image::toImageDto).toList()
+        );
     }
 }
