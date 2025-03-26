@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.gidcode.destinyshop.controller.CategoryController;
 import com.gidcode.destinyshop.dto.ImageDto;
 import com.gidcode.destinyshop.dto.ProductDto;
+import com.gidcode.destinyshop.exception.AlreadyExistException;
 import com.gidcode.destinyshop.exception.ProductNotFoundException;
 import com.gidcode.destinyshop.model.Category;
 import com.gidcode.destinyshop.model.Image;
@@ -27,11 +28,13 @@ public class ProductService implements IProductService{
     
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final ImageRepository imageRepository;
     private final ModelMapper modelMapper;
 
     @Override
     public Product addProduct(AddProductRequest addProductRequest) {
+        if (productRepository.existsByNameAndBrand(addProductRequest.name(),addProductRequest.brand())){
+            throw new AlreadyExistException(addProductRequest.brand()+" "+addProductRequest.name()+" already exist. You may update instead!");
+        }
         Category category = Optional.ofNullable(
                 categoryRepository.findByName(addProductRequest.category().getName())
         ).orElseGet( () -> {
@@ -123,9 +126,6 @@ public class ProductService implements IProductService{
     @Override
     public ProductDto convertToDto(Product product){
         return product.toProductDto();
-//        List<Image> images = imageRepository.findProductById(product.getId());
-//        List<ImageDto> imageDtos = images.stream().map(Image::toImageDto).toList();
-//        return new ProductDto(productDto.name(), productDto.brand(), productDto.price(), productDto.inventory(), productDto.description(), productDto.category(), imageDtos);
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.gidcode.destinyshop.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<ApiResponse> addCategory(@RequestBody Category name) {
         try {
@@ -59,6 +61,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable long id, @RequestBody Category category) {
         try {
@@ -69,6 +72,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteById(@PathVariable long id) {
         try {

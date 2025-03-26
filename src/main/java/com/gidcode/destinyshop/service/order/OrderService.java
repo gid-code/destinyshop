@@ -25,7 +25,7 @@ public class OrderService implements IOrderService {
     private final ICartService cartService;
 
     @Override
-    public Order placeOrder(Long userId) {
+    public OrderDto placeOrder(Long userId) {
         Cart cart = cartService.getCartByUserId(userId);
 
         Order order = createOrder(cart);
@@ -36,7 +36,7 @@ public class OrderService implements IOrderService {
         Order savedOrder = orderRepository.save(order);
 
         cartService.clearCart(cart.getId());
-        return savedOrder;
+        return savedOrder.toDto();
     }
 
     private Order createOrder(Cart cart){

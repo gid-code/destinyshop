@@ -41,6 +41,7 @@ public class OrderItem {
         return new OrderItemDto(
                 this.product.getId(),
                 this.product.getName(),
+                this.product.getBrand(),
                 this.quantity,
                 this.unitPrice,
                 product.getImages().stream().map(Image::toImageDto).toList()

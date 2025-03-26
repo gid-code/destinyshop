@@ -2,13 +2,10 @@ package com.gidcode.destinyshop.controller;
 
 
 import com.gidcode.destinyshop.dto.OrderDto;
-import com.gidcode.destinyshop.exception.AlreadyExistException;
 import com.gidcode.destinyshop.exception.OrderNotFoundException;
-import com.gidcode.destinyshop.model.Order;
 import com.gidcode.destinyshop.response.ApiResponse;
 import com.gidcode.destinyshop.service.order.IOrderService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +20,7 @@ public class OrderController extends BaseController{
     @PostMapping
     public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId) {
         try {
-            OrderDto order = orderService.placeOrder(userId).toDto();
+            OrderDto order = orderService.placeOrder(userId);
             return ResponseEntity.ok(new ApiResponse("Item Order Success!", order));
         } catch (Exception e) {
             return handleException(e);
