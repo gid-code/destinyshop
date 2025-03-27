@@ -9,6 +9,7 @@ import com.gidcode.destinyshop.response.ApiResponse;
 import com.gidcode.destinyshop.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class UserController extends BaseController{
         }
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse> deleteUserById(@PathVariable Long id) {
         try {

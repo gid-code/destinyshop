@@ -7,6 +7,9 @@ import com.gidcode.destinyshop.repository.UserRepository;
 import com.gidcode.destinyshop.request.CreateUserRequest;
 import com.gidcode.destinyshop.request.UpdateUserRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService implements IUserService{
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User getUserById(Long userId) {
@@ -31,7 +35,7 @@ public class UserService implements IUserService{
                     user.setFirstName(req.firstName());
                     user.setLastName(req.lastName());
                     user.setEmail(req.email());
-                    user.setPassword(req.password());
+                    user.setPassword(passwordEncoder.encode(req.password()));
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new AlreadyExistException("User with email "+request.email()+" already exist."));
@@ -52,5 +56,12 @@ public class UserService implements IUserService{
                 userRepository::delete,
                 () -> { throw new UserNotFoundException("User with id "+userId+" not found");}
                 );
+    }
+
+    @Override
+    public User getAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        return userRepository.findByEmail(email);
     }
 }
